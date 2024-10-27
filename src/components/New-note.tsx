@@ -23,6 +23,10 @@ export default function NewNote({ setIsCreating, getNoteList }) {
         content: content,
       }),
     });
+
+    const result = await res.json();
+    console.log(result.message);
+
     getNoteList();
     setIsCreating(false);
   };

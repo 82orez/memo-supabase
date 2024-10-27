@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json(newNote);
+  return NextResponse.json({ message: "Post succeed!" });
 }
 
 // Update a note by ID
