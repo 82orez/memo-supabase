@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function NewNote({ setIsCreating, getNoteList, setNoteList }) {
+export default function NewNote({ setIsCreating, getNoteList }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -23,9 +23,7 @@ export default function NewNote({ setIsCreating, getNoteList, setNoteList }) {
         content: content,
       }),
     });
-    getNoteList()
-      .then((data) => setNoteList(data))
-      .catch((e) => console.error(e));
+    getNoteList();
     setIsCreating(false);
   };
 

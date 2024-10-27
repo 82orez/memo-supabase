@@ -17,12 +17,14 @@ interface Note {
 export default function Ui() {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [activeNoteId, setActiveNoteId] = useState<number | null>(null);
-  const [noteList, setNoteList] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
 
   const getNoteList = async () => {
     try {
       const res = await fetch("/api/note");
-      return await res.json();
+      const result = await res.json();
+      setNotes(result);
+      return "First rendered";
     } catch (e) {
       console.error(e);
     }
@@ -30,7 +32,7 @@ export default function Ui() {
 
   useEffect(() => {
     getNoteList()
-      .then((data) => setNoteList(data))
+      .then((msg) => console.log(msg))
       .catch((e) => console.error(e));
   }, []);
 
@@ -38,9 +40,9 @@ export default function Ui() {
     <main className={"h-screen w-full flex flex-col"}>
       <Header />
       <div className={"grow border-8 border-amber-300 relative"}>
-        <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={noteList} />
+        <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={notes} />
         {isCreating ? (
-          <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} setNoteList={setNoteList} />
+          <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} />
         ) : activeNoteId ? (
           <NoteViewer note={noteList.find((note) => note.id === activeNoteId) as Note} />
         ) : (
