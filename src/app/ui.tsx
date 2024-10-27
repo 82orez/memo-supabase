@@ -6,6 +6,7 @@ import NewNote from "@/components/New-note";
 import { useEffect, useState } from "react";
 import NoteViewer from "@/components/Note-viewer";
 import EmptyNote from "@/components/Empty-note";
+import axios from "axios";
 
 // note 속성의 타입 정의
 interface Note {
@@ -21,12 +22,12 @@ export default function Ui() {
 
   const getNoteList = async () => {
     try {
-      const res = await fetch("/api/note");
-      const result = await res.json();
+      const res = await axios("/api/note");
+      const result = await res.data;
       setNotes(result);
       return "getNoteList rendered";
     } catch (e) {
-      console.error(e);
+      console.error("Error Loading page:", e);
     }
   };
 

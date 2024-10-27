@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import axios from "axios";
 
 export default function NewNote({ setIsCreating, getNoteList, setActiveNoteId }) {
   const [title, setTitle] = useState("");
@@ -12,26 +13,22 @@ export default function NewNote({ setIsCreating, getNoteList, setActiveNoteId })
       return;
     }
 
-    // supabase 부분
-    const res = await fetch("/api/note", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    try {
+      const res = await axios.post("/api/note", {
         title: title,
         content: content,
-      }),
-    });
+      });
 
-    const result = await res.json();
-    // console.log(result.message);
+      const result = res.data;
+      const addedNotes = await getNoteList();
+      console.log("Post succeed!", addedNotes);
 
-    const addedNotes = await getNoteList();
-    // await getNoteList();
-    console.log("Post succeed!", addedNotes);
-    setActiveNoteId(result.id);
-    setIsCreating(false);
+      setActiveNoteId(result.id);
+      setIsCreating(false);
+    } catch (e) {
+      console.error("Error saving note:", e);
+      alert("Failed to save note. Please try again.");
+    }
   };
 
   return (
