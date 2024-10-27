@@ -20,12 +20,18 @@ export default function Ui() {
   const [noteList, setNoteList] = useState<Note[]>([]);
 
   const getNoteList = async () => {
-    const res = await fetch("/api/note");
-    return await res.json();
+    try {
+      const res = await fetch("/api/note");
+      return await res.json();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
-    getNoteList().then((data) => setNoteList(data));
+    getNoteList()
+      .then((data) => setNoteList(data))
+      .catch((e) => console.error(e));
   }, []);
 
   return (
