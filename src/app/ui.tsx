@@ -7,14 +7,6 @@ import { useEffect, useState } from "react";
 import NoteViewer from "@/components/Note-viewer";
 import EmptyNote from "@/components/Empty-note";
 
-const notes = [
-  { id: 1, title: "Note 1", content: "Note 내용 1" },
-  { id: 2, title: "Note 2", content: "Note 내용 2" },
-  { id: 3, title: "Note 3", content: "Note 내용 3" },
-  { id: 4, title: "Note 4", content: "Note 내용 4" },
-  { id: 5, title: "Note 5", content: "Note 내용 5" },
-];
-
 // note 속성의 타입 정의
 interface Note {
   id: number;
@@ -25,16 +17,26 @@ interface Note {
 export default function Ui() {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [activeNoteId, setActiveNoteId] = useState<number | null>(null);
+  const [noteList, setNoteList] = useState<Note[]>([]);
+
+  const getNoteList = async () => {
+    const res = await fetch("/api/note");
+    return await res.json();
+  };
+
+  useEffect(() => {
+    getNoteList().then((data) => setNoteList(data));
+  }, []);
 
   return (
     <main className={"h-screen w-full flex flex-col"}>
       <Header />
       <div className={"grow border-8 border-amber-300 relative"}>
-        <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={notes} />
+        <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={noteList} />
         {isCreating ? (
           <NewNote setIsCreating={setIsCreating} />
         ) : activeNoteId ? (
-          <NoteViewer note={notes.find((note) => note.id === activeNoteId) as Note} />
+          <NoteViewer note={noteList.find((note) => note.id === activeNoteId) as Note} />
         ) : (
           <EmptyNote />
         )}
