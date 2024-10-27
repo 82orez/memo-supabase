@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-//    "noImplicitAny": false,
+    "noImplicitAny": false, // any 타입 오류 탐지 해제
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

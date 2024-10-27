@@ -40,7 +40,7 @@ export default function Ui() {
       <div className={"grow border-8 border-amber-300 relative"}>
         <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={noteList} />
         {isCreating ? (
-          <NewNote setIsCreating={setIsCreating} />
+          <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} setNoteList={setNoteList} />
         ) : activeNoteId ? (
           <NoteViewer note={noteList.find((note) => note.id === activeNoteId) as Note} />
         ) : (

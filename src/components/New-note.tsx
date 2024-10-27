@@ -2,12 +2,30 @@
 
 import { useState } from "react";
 
-export default function NewNote({ setIsCreating }) {
+export default function NewNote({ setIsCreating, getNoteList, setNoteList }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const onSave = async () => {
+    if (!title || !content) {
+      alert("Please input a title & content");
+      return;
+    }
+
     // supabase 부분
+    const res = await fetch("/api/note", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title,
+        content: content,
+      }),
+    });
+    getNoteList()
+      .then((data) => setNoteList(data))
+      .catch((e) => console.error(e));
     setIsCreating(false);
   };
 
