@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function NoteViewer({ note, getNoteList }) {
+export default function NoteViewer({ note, getNoteList, setActiveNoteId }) {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +26,25 @@ export default function NoteViewer({ note, getNoteList }) {
     }
   };
 
-  const ondelete = async () => {};
+  const onDelete = async () => {
+    if (!window.confirm("정말로 삭제하시겠습니까?")) {
+      return;
+    }
+    try {
+      const res = await axios.delete("/api/note", {
+        data: { id: note.id },
+      });
+      const result = res.data;
+      console.log(result);
+
+      setIsEditing(false);
+      setActiveNoteId(null);
+      getNoteList();
+    } catch (e) {
+      console.error("Error deleting note:", e);
+      alert("Failed to delete note. Please try again.");
+    }
+  };
 
   useEffect(() => {
     setTitle(note.title);
@@ -66,7 +84,9 @@ export default function NoteViewer({ note, getNoteList }) {
             <button className={"p-3 hover:bg-green-300 hover:text-white rounded-xl font-bold text-xl"} onClick={onEdit}>
               Save
             </button>
-            <button className={"p-3 hover:bg-rose-400 hover:text-white rounded-xl font-bold text-xl"}>Del</button>
+            <button className={"p-3 hover:bg-rose-400 hover:text-white rounded-xl font-bold text-xl"} onClick={onDelete}>
+              Del
+            </button>
           </>
         ) : (
           <button className={"p-3 hover:bg-rose-400 hover:text-white rounded-xl font-bold text-xl"} onClick={() => setIsEditing(true)}>
