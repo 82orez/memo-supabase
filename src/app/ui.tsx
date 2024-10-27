@@ -24,7 +24,7 @@ export default function Ui() {
       const res = await fetch("/api/note");
       const result = await res.json();
       setNotes(result);
-      return "First rendered";
+      return "getNoteList rendered";
     } catch (e) {
       console.error(e);
     }
@@ -42,7 +42,7 @@ export default function Ui() {
       <div className={"grow border-8 border-amber-300 relative"}>
         <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={notes} />
         {isCreating ? (
-          <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} />
+          <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} setActiveNoteId={setActiveNoteId} />
         ) : activeNoteId ? (
           <NoteViewer note={notes.find((note) => note.id === activeNoteId) as Note} />
         ) : (

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function NewNote({ setIsCreating, getNoteList }) {
+export default function NewNote({ setIsCreating, getNoteList, setActiveNoteId }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -25,9 +25,12 @@ export default function NewNote({ setIsCreating, getNoteList }) {
     });
 
     const result = await res.json();
-    console.log(result.message);
+    // console.log(result.message);
 
-    getNoteList();
+    const addedNotes = await getNoteList();
+    // await getNoteList();
+    console.log("Post succeed!", addedNotes);
+    setActiveNoteId(result.id);
     setIsCreating(false);
   };
 
