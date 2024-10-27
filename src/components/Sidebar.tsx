@@ -11,7 +11,7 @@ export default function Sidebar({ activeNoteId, setActiveNoteId, setIsCreating, 
       </button>
 
       <ul className={"flex flex-col gap-2"}>
-        {notes.map((note) => (
+        {notes.map((note: { id: number; title: string }) => (
           <li
             key={note.id}
             className={"mt-2"}

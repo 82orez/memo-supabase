@@ -1,19 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import axios from "axios";
 
-interface Props {
-  note: {
-    id: number;
-    title: string;
-    content: string;
-  };
-}
-
-export default function NoteViewer({ note }: Props) {
+export default function NoteViewer({ note, getNoteList }) {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const [isEditing, setIsEditing] = useState(false);
+
+  const onEdit = async () => {
+    try {
+      const res = await axios.put("/api/note", {
+        id: note.id,
+        title: title,
+        content: content,
+      });
+      const result = res.data;
+      console.log("Edit succeed!", result);
+
+      setIsEditing(false);
+      getNoteList();
+    } catch (e) {
+      console.error("Error saving note:", e);
+      alert("Failed to edit note. Please try again.");
+    }
+  };
+
+  const ondelete = async () => {};
 
   useEffect(() => {
     setTitle(note.title);
@@ -50,7 +63,9 @@ export default function NoteViewer({ note }: Props) {
       <div className={"flex justify-around"}>
         {isEditing ? (
           <>
-            <button className={"p-3 hover:bg-green-300 hover:text-white rounded-xl font-bold text-xl"}>Save</button>
+            <button className={"p-3 hover:bg-green-300 hover:text-white rounded-xl font-bold text-xl"} onClick={onEdit}>
+              Save
+            </button>
             <button className={"p-3 hover:bg-rose-400 hover:text-white rounded-xl font-bold text-xl"}>Del</button>
           </>
         ) : (

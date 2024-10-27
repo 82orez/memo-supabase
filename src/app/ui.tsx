@@ -45,7 +45,7 @@ export default function Ui() {
         {isCreating ? (
           <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} setActiveNoteId={setActiveNoteId} />
         ) : activeNoteId ? (
-          <NoteViewer note={notes.find((note) => note.id === activeNoteId) as Note} />
+          <NoteViewer note={notes.find((note) => note.id === activeNoteId) as Note} getNoteList={getNoteList} />
         ) : (
           <EmptyNote />
         )}
