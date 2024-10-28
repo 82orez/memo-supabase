@@ -19,6 +19,7 @@ export default function Ui() {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [activeNoteId, setActiveNoteId] = useState<number | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [search, setSearch] = useState("");
 
   const getNoteList = async () => {
     try {
@@ -41,7 +42,14 @@ export default function Ui() {
     <main className={"h-screen w-full flex flex-col"}>
       <Header />
       <div className={"grow border-8 border-amber-300 relative"}>
-        <Sidebar activeNoteId={activeNoteId} setActiveNoteId={setActiveNoteId} setIsCreating={setIsCreating} notes={notes} />
+        <Sidebar
+          activeNoteId={activeNoteId}
+          setActiveNoteId={setActiveNoteId}
+          setIsCreating={setIsCreating}
+          notes={notes}
+          search={search}
+          setSearch={setSearch}
+        />
         {isCreating ? (
           <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} setActiveNoteId={setActiveNoteId} />
         ) : activeNoteId ? (
