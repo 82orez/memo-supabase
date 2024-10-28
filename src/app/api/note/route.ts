@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
   const notes = await prisma.note.findMany({
     where: {
-      title: {
+      content: {
         contains: search,
         mode: "insensitive", // 대소문자 구분 없이 검색
       },

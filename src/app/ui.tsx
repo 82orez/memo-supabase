@@ -50,6 +50,7 @@ export default function Ui() {
           search={search}
           setSearch={setSearch}
         />
+        {/*{search ? <EmptyNote /> : null}*/}
         {isCreating ? (
           <NewNote setIsCreating={setIsCreating} getNoteList={getNoteList} setActiveNoteId={setActiveNoteId} />
         ) : activeNoteId ? (
