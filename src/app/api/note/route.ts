@@ -4,8 +4,18 @@ import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 // Get all notes
-export async function GET() {
-  const notes = await prisma.note.findMany();
+export async function GET(request: Request) {
+  const search = new URL(request.url).searchParams.get("search") || "";
+
+  const notes = await prisma.note.findMany({
+    where: {
+      title: {
+        contains: search,
+        mode: "insensitive", // 대소문자 구분 없이 검색
+      },
+    },
+  });
+
   return NextResponse.json(notes);
 }
 

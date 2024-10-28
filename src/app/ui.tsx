@@ -23,7 +23,7 @@ export default function Ui() {
 
   const getNoteList = async () => {
     try {
-      const res = await axios("/api/note");
+      const res = await axios(`/api/note?search=${search}`, {});
       const result = await res.data;
       setNotes(result);
       return "getNoteList rendered";
@@ -36,7 +36,7 @@ export default function Ui() {
     getNoteList()
       .then((msg) => console.log(msg))
       .catch((e) => console.error(e));
-  }, []);
+  }, [search]);
 
   return (
     <main className={"h-screen w-full flex flex-col"}>
